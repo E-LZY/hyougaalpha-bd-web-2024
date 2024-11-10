@@ -309,21 +309,7 @@ const handleSubmit = async () => {
   const swiperRef = useRef<SwiperClass | null>(null);
 
 // Remove the second instance of postData
-const { data: postData, error: postError, isLoading: postIsLoading, isValidating: postIsValidating, mutate: postMutate } = useSWR('/api/posts', async (url) => {
-  setPage(0)
-  const res = await fetch(url)
-  if (!res.ok) {
-    return {
-      data: [],
-      total: 0
-    }
-  }
-  setPage(1)
-  return (await res.json()) as PostsData
-}, {
-  revalidateOnMount: true,
-  revalidateOnFocus: false
-})
+
 
   return (
     <div className="flex flex-col w-full items-center">
