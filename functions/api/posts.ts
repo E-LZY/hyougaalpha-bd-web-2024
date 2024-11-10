@@ -22,7 +22,16 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
 
   if (context.request.method === 'GET') {
     try {
-      const kvPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData ?? { data: [], total: 0 };
+      const kvPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData;
+      if (!kvPosts) {
+        console.log('No existing posts found, returning empty array');
+        return new Response(JSON.stringify({ data: [], total: 0 }), {
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          }
+        });
+      }
       return new Response(JSON.stringify(kvPosts), {
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +39,8 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
         }
       });
     } catch (error) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch posts' }), {
+      console.error('GET request error:', error);
+      return new Response(JSON.stringify({ error: 'Failed to fetch posts', details: error.message }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
@@ -42,22 +52,56 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
 
   if (context.request.method === 'POST') {
     try {
+      // Log the incoming request body
       const newPost = await context.request.json();
-      const existingPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData ?? { data: [], total: 0 };
-      
+      console.log('Received new post:', newPost);
+
+      // Fetch existing posts with logging
+      const existingPostsRaw = await context.env.POSTS_KV.get('all_posts');
+      console.log('Raw KV response:', existingPostsRaw);
+
+      let existingPosts: PostsData;
+      try {
+        existingPosts = existingPostsRaw ? JSON.parse(existingPostsRaw) : { data: [], total: 0 };
+      } catch (parseError) {
+        console.error('Error parsing existing posts:', parseError);
+        existingPosts = { data: [], total: 0 };
+      }
+
+      // Log the current state
+      console.log('Current posts state:', existingPosts);
+
+      // Update posts
       existingPosts.data.unshift(newPost);
       existingPosts.total = existingPosts.data.length;
 
-      await context.env.POSTS_KV.put('all_posts', JSON.stringify(existingPosts));
+      // Log the update operation
+      console.log('Attempting to write updated posts:', existingPosts);
 
-      return new Response(JSON.stringify({ message: 'Post created successfully' }), {
+      // Perform the KV write with explicit error handling
+      try {
+        await context.env.POSTS_KV.put('all_posts', JSON.stringify(existingPosts));
+        console.log('KV write successful');
+      } catch (kvError) {
+        console.error('KV write error:', kvError);
+        throw new Error(`KV write failed: ${kvError.message}`);
+      }
+
+      return new Response(JSON.stringify({ 
+        message: 'Post created successfully',
+        postCount: existingPosts.total 
+      }), {
         headers: {
           'Content-Type': 'application/json',
           ...corsHeaders
         }
       });
     } catch (error) {
-      return new Response(JSON.stringify({ error: 'Failed to create post' }), {
+      console.error('POST request error:', error);
+      return new Response(JSON.stringify({ 
+        error: 'Failed to create post', 
+        details: error.message 
+      }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
