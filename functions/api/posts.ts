@@ -9,6 +9,14 @@ interface PostsData {
   total: number;
 }
 
+// Helper function to safely get error message
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
+};
+
 export const onRequest = async (context: { env: Env; request: Request }) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -40,7 +48,10 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
       });
     } catch (error) {
       console.error('GET request error:', error);
-      return new Response(JSON.stringify({ error: 'Failed to fetch posts', details: error.message }), {
+      return new Response(JSON.stringify({ 
+        error: 'Failed to fetch posts', 
+        details: getErrorMessage(error) 
+      }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
@@ -52,11 +63,9 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
 
   if (context.request.method === 'POST') {
     try {
-      // Log the incoming request body
       const newPost = await context.request.json();
       console.log('Received new post:', newPost);
 
-      // Fetch existing posts with logging
       const existingPostsRaw = await context.env.POSTS_KV.get('all_posts');
       console.log('Raw KV response:', existingPostsRaw);
 
@@ -68,23 +77,19 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
         existingPosts = { data: [], total: 0 };
       }
 
-      // Log the current state
       console.log('Current posts state:', existingPosts);
 
-      // Update posts
       existingPosts.data.unshift(newPost);
       existingPosts.total = existingPosts.data.length;
 
-      // Log the update operation
       console.log('Attempting to write updated posts:', existingPosts);
 
-      // Perform the KV write with explicit error handling
       try {
         await context.env.POSTS_KV.put('all_posts', JSON.stringify(existingPosts));
         console.log('KV write successful');
       } catch (kvError) {
         console.error('KV write error:', kvError);
-        throw new Error(`KV write failed: ${kvError.message}`);
+        throw new Error(`KV write failed: ${getErrorMessage(kvError)}`);
       }
 
       return new Response(JSON.stringify({ 
@@ -100,7 +105,7 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
       console.error('POST request error:', error);
       return new Response(JSON.stringify({ 
         error: 'Failed to create post', 
-        details: error.message 
+        details: getErrorMessage(error) 
       }), {
         status: 500,
         headers: {
