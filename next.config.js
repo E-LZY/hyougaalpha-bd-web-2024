@@ -1,9 +1,9 @@
-/** @type {import('next/dist').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // This tells Next.js to export static files
   images: {
-    unoptimized: true,  // Required for static export
+    unoptimized: true,
   },
+  // Remove the output: 'export' if you need API routes
 }
 
 module.exports = nextConfig
