@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
-// Define the KV binding interface
-interface Env {
-  POSTS_KV: KVNamespace;
-}
+import type { KVNamespace } from '@cloudflare/workers-types';
 
 interface PostsData {
   data: any[];
@@ -12,8 +8,12 @@ interface PostsData {
 
 // Declare the binding for TypeScript
 declare global {
-  const POSTS_KV: KVNamespace;
+  interface Window {
+    POSTS_KV: KVNamespace;
+  }
 }
+
+declare const POSTS_KV: KVNamespace;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Handle GET request - fetch posts
