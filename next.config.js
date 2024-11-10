@@ -1,14 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'out',
+  output: 'export',  // Changed from 'out' to 'export'
   reactStrictMode: true,
 
   // WebAssembly configuration
   webpack: (config) => {
-    // Enable both asyncWebAssembly and layers experiments
     config.experiments = {
       asyncWebAssembly: true,
-      layers: true  // Add this line to enable layers
+      layers: true
     };
     return config;
   },
@@ -16,7 +15,6 @@ const nextConfig = {
   // Images configuration
   images: {
     unoptimized: true,
-    domains: ['*'], 
     remotePatterns: [
       {
         protocol: 'https',
@@ -31,8 +29,8 @@ const nextConfig = {
   // Disable powered by header
   poweredByHeader: false,
 
-  // Customize the build directory
-  distDir: '.next',
+  // Remove distDir configuration as it conflicts with static export
+  // distDir: '.next', // Remove this line
 
   // Enable compression
   compress: true,
