@@ -17,3 +17,5 @@ binding = "POSTS_KV"
 id = "dc95faaf9b5e48d193683d629e1599e5"
 preview_id = "dc95faaf9b5e48d193683d629e1599e5"
 
+[build.environment]
+NODE_VERSION = "18"
