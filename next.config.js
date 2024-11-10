@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // Changed from 'out' to 'export'
+  output: 'standalone',  // Changed from 'out' to 'export'
   reactStrictMode: true,
 
   // WebAssembly configuration
