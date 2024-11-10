@@ -1,5 +1,3 @@
-// Path: functions/api/posts.ts
-
 import { KVNamespace } from '@cloudflare/workers-types';
 
 interface Env {
@@ -11,22 +9,20 @@ interface PostsData {
   total: number;
 }
 
-export async function onRequest(context: { env: Env; request: Request }) {
+export const onRequest = async (context: { env: Env; request: Request }) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
-  // Handle OPTIONS request
   if (context.request.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Handle GET request
   if (context.request.method === 'GET') {
     try {
-      const kvPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData || { data: [], total: 0 };
+      const kvPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData ?? { data: [], total: 0 };
       return new Response(JSON.stringify(kvPosts), {
         headers: {
           'Content-Type': 'application/json',
@@ -44,11 +40,10 @@ export async function onRequest(context: { env: Env; request: Request }) {
     }
   }
 
-  // Handle POST request
   if (context.request.method === 'POST') {
     try {
       const newPost = await context.request.json();
-      const existingPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData || { data: [], total: 0 };
+      const existingPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData ?? { data: [], total: 0 };
       
       existingPosts.data.unshift(newPost);
       existingPosts.total = existingPosts.data.length;
@@ -76,4 +71,4 @@ export async function onRequest(context: { env: Env; request: Request }) {
     status: 405,
     headers: corsHeaders
   });
-}
+};
