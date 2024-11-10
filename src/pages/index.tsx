@@ -11,8 +11,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBluesky, faFacebook, faInstagram, faTwitch } from '@fortawesome/free-brands-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-// import { Logo } from '@/svg/Logo';
-
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { LeftNav } from '@/svg/LeftNav';
@@ -28,8 +26,6 @@ import { PorkBottom } from '@/svg/badge/bottom/porkB';
 import { CpuTop } from '@/svg/badge/top/cpuT';
 import { CpuBottom } from '@/svg/badge/bottom/cpuB';
 
-//
-
 const oldStandard = Old_Standard_TT({ weight : '400', subsets : ['latin'] })
 const alegreya = Alegreya_Sans_SC({ weight : '400', subsets : ['latin'] })
 
@@ -37,14 +33,14 @@ export default function Page() {
   const [lastSwap, setLastSwap] = useState<DateTime>(DateTime.now())
   const [now, setNow] = useState<DateTime>(DateTime.now())
   const [openEye, setOpenEye] = useState(true)
-
-  // new for writing box
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
   const [userName, setUserName] = useState('');
   const userNameRef = useRef<HTMLTextAreaElement>(null);
   const [userComment, setUserComment] = useState('');
   const userCommentRef = useRef<HTMLTextAreaElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const pageSize = 10
   const swapTime = 5
@@ -99,6 +95,54 @@ export default function Page() {
     }
   ]
 
+  const gifts = [
+    {
+      id: "ba8a1955-5f71-4cde-9886-62fc829784a1",
+      name: "cocoa",
+      desc: "โกโก้ร้อนช่วยให้ร่างกายอุ่น แต่รอยยิ้มคุณช่วยให้อุ่นใจ",
+      imgURL: "/img/Sticker/Cocoa.png",
+      bgColorCode: "white",
+      borderColor: "#B44137",
+      order: 1
+    },
+    {
+      id: "04fc6ec8-abc6-4328-9dce-66aaf8516c64",
+      name: "momiji",
+      desc: "ใบไม้อาจมีเปลี่ยนสี แต่คำว่า 'รัก' ที่สกม.มีไม่เคยเปลี่ยนไป",
+      imgURL: "/img/Sticker/Manju.png",
+      bgColorCode: "white",
+      borderColor: "#AA613F",
+      order: 2
+    },
+    {
+      id: "32671e3c-59fb-4972-8926-18f5751efe16",
+      name: "star",
+      desc: "คืนที่ดาวเต็มฟ้า ฉันจินตนาการเป็นหน้าเธอ",
+      imgURL: "/img/Sticker/Star.png",
+      bgColorCode: "white",
+      borderColor: "#CFBB41",
+      order: 3
+    },
+    {
+      id: "46fd5699-ccb1-4882-b5ad-469b8491747a",
+      name: "pork",
+      desc: "หมูปิ้งร้อนๆก็ยังไม่ฮ็อตเท่าพี่",
+      imgURL: "/img/Sticker/Grilled pork.png",
+      bgColorCode: "white",
+      borderColor: "#2A5421",
+      order: 4
+    },
+    {
+      id: "6916f01c-2287-4637-aa57-65b7886dc368",
+      name: "cpu",
+      desc: "คุณมีงบเท่าไหร่ แลกหัวใจคุณแทนได้ไหมคะ",
+      imgURL: "/img/Sticker/PC RGB.png",
+      bgColorCode: "white",
+      borderColor: "#5A7397",
+      order: 5
+    },
+  ];
+
   const handleResize = () => {
     setDimensions({
       width: window.innerWidth,
@@ -107,7 +151,6 @@ export default function Page() {
   }
 
   useEffect(() => {
-    // Update Every Second
     const interval = setInterval(() => {
       setNow(DateTime.now())
     }, 1000)
@@ -132,16 +175,13 @@ export default function Page() {
       setOpenEye(!openEye)
     }
   }, [now])
-  
-  // new for writing box
+
   const handleOpenModal = () => {
-    if(isModalOpen)
-    {
+    if(isModalOpen) {
       handleCloseModal();
-    }
-    else
-    {
+    } else {
       setModalOpen(true);
+      setError(null);
     }
   };
 
@@ -150,6 +190,7 @@ export default function Page() {
     setUserName('');
     setUserComment('');
     setSelectedImageId(null);
+    setError(null);
   };
 
   const uuid = () => {
@@ -162,84 +203,6 @@ export default function Page() {
       }
     );
   };
-
-  const handleSubmit = () => {
-    if(userName==="" && userNameRef.current)
-    {
-      userNameRef.current.focus();
-      return;
-    }
-    if(userComment==="" && userCommentRef.current)
-    {
-      userCommentRef.current.focus();
-      return;
-    }
-
-    const timestamp = new Date().toISOString();
-    const id = uuid();
-    console.log('Name:', userName);
-    console.log('Comment:', userComment);
-    console.log('Selected Image ID:', selectedImageId);
-    console.log('Time:', timestamp);
-    handleCloseModal();
-  };
-
-  const gifts = [
-    {
-      id: "ba8a1955-5f71-4cde-9886-62fc829784a1",
-      name: "cocoa",
-      desc: "โกโก้ร้อนช่วยให้ร่างกายอุ่น แต่รอยยิ้มคุณช่วยให้อุ่นใจ",
-      imgURL:
-        "/img/Sticker/Cocoa.png",
-      bgColorCode: "white",
-      borderColor: "#B44137",
-      order: 1
-    },
-    {
-      id: "04fc6ec8-abc6-4328-9dce-66aaf8516c64",
-      name: "momiji",
-      desc: "ใบไม้อาจมีเปลี่ยนสี แต่คำว่า ‘รัก’ ที่สกม.มีไม่เคยเปลี่ยนไป",
-      imgURL:
-        "/img/Sticker/Manju.png",
-      bgColorCode: "white",
-      borderColor: "#AA613F",
-      order: 2
-    },
-    {
-      id: "32671e3c-59fb-4972-8926-18f5751efe16",
-      name: "star",
-      desc: "คืนที่ดาวเต็มฟ้า ฉันจินตนาการเป็นหน้าเธอ",
-      imgURL:
-        "/img/Sticker/Star.png",
-      bgColorCode: "white",
-      borderColor: "#CFBB41",
-      order: 3
-    },
-    {
-      id: "46fd5699-ccb1-4882-b5ad-469b8491747a",
-      name: "pork",
-      desc: "หมูปิ้งร้อนๆก็ยังไม่ฮ็อตเท่าพี่",
-      imgURL:
-        "/img/Sticker/Grilled pork.png",
-      bgColorCode: "white",
-      borderColor: "#2A5421",
-      order: 4
-    },
-    {
-      id: "6916f01c-2287-4637-aa57-65b7886dc368",
-      name: "cpu",
-      desc: "คุณมีงบเท่าไหร่ แลกหัวใจคุณแทนได้ไหมคะ",
-      imgURL:
-        "/img/Sticker/PC RGB.png",
-      bgColorCode: "white",
-      borderColor: "#5A7397",
-      order: 5
-    },
-  ];
-
-  
-  //end new
-  const swiperRef = useRef<SwiperClass | null>(null);
 
   const { data:postData, error:postError, isLoading:postIsLoading, isValidating:postIsValidating, mutate:postMutate } = useSWR('/post.json', async (url) => {
     setPage(0)
@@ -275,6 +238,75 @@ export default function Page() {
     revalidateOnFocus : false
   })
 
+  const handleSubmit = async () => {
+    if(userName==="" && userNameRef.current) {
+      userNameRef.current.focus();
+      return;
+    }
+    if(userComment==="" && userCommentRef.current) {
+      userCommentRef.current.focus();
+      return;
+    }
+    if(!selectedImageId) {
+      setError('Please select a gift');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    const timestamp = new Date().toISOString();
+    const id = uuid();
+    
+    const selectedGift = gifts.find(gift => gift.order === selectedImageId);
+    
+    if (!selectedGift) {
+      setError('Invalid gift selection');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const newWish = {
+      id,
+      name: userName,
+      comment: userComment,
+      giftId: selectedGift.id,
+      createdAt: timestamp,
+      gift: selectedGift
+    };
+
+    try {
+      const response = await fetch('/api/saveWish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newWish)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save wish');
+      }
+
+      await postMutate(async (currentData) => {
+        if (!currentData) return currentData;
+        
+        return {
+          data: [newWish, ...currentData.data],
+          total: currentData.total + 1
+        };
+      }, { revalidate: false });
+
+      handleCloseModal();
+    } catch (error) {
+      setError('Failed to save your wish. Please try again.');
+      console.error('Error saving wish:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const swiperRef = useRef<SwiperClass | null>(null);
 
   return (
     <div className="flex flex-col w-full items-center">
