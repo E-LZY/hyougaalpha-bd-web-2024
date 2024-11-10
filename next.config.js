@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
     unoptimized: true,
   },
-  // Remove the output: 'export' if you need API routes
+  distDir: 'dist', // Add this line
 }
 
 module.exports = nextConfig
