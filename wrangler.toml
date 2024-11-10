@@ -1,6 +1,6 @@
 [build]
 command = "npm run build"
-publish = "out"
+pages_build_output_dir = "out"
 
 [build.processing]
 skip_source_maps = true
@@ -10,7 +10,10 @@ node_version = "18"
 
 [functions]
 node_compat = true
+directory = "functions"
 
-kv_namespaces = [
-  { binding = "POSTS_KV", id = "dc95faaf9b5e48d193683d629e1599e5" }
-]
+[[kv_namespaces]]
+binding = "POSTS_KV"
+id = "dc95faaf9b5e48d193683d629e1599e5"
+preview_id = "dc95faaf9b5e48d193683d629e1599e5"
+
