@@ -91,11 +91,18 @@ export default function Page() {
       order: 5
     },
     {
+      id: "6f82c72d-4598-4de3-9f45-1cda23f65892",
+      name: "chaokuy",
+      url: "https://x.com/hagaalphyou2211",
+      imgURL: "/img/banner/CK-banner.png",
+      order: 6
+    },
+    {
       id: "8d3ab3b5-769d-4ab5-b06e-003bf8f2ad3a",
       name: "unknown",
       url: "",
       imgURL: "/img/banner/Unknown.png",
-      order: 6
+      order: 7
     }
   ]
 
