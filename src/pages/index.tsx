@@ -163,36 +163,73 @@ export default function Page() {
     );
   };
 
+// Add these types at the top of the file
+type Post = {
+  id: string;
+  name: string;
+  comment: string;
+  giftId: string;
+  createdAt: string;
+  gift: {
+    id: string;
+    name: string;
+    desc: string | null;
+    imgURL: string;
+    bgColorCode: string;
+    borderColor: string;
+    order: number;
+  };
+};
+
+type PostsData = {
+  data: Post[];
+  total: number;
+};
+
+// Replace the existing SWR fetcher with this
+const { data: postData, error: postError, isLoading: postIsLoading, isValidating: postIsValidating, mutate: postMutate } = useSWR('/api/posts', async (url) => {
+  setPage(0)
+  const res = await fetch(url)
+  if (!res.ok) {
+    return {
+      data: [],
+      total: 0
+    }
+  }
+  setPage(1)
+  return (await res.json()) as PostsData
+}, {
+  revalidateOnMount: true,
+  revalidateOnFocus: false
+})
+
+// Replace the handleSubmit function with this
 const handleSubmit = async () => {
-  if(userName==="" && userNameRef.current)
-  {
+  if (userName === "" && userNameRef.current) {
     userNameRef.current.focus();
     return;
   }
-  if(userComment==="" && userCommentRef.current)
-  {
+  if (userComment === "" && userCommentRef.current) {
     userCommentRef.current.focus();
     return;
   }
-  if(!selectedImageId) {
+  
+  const selectedGift = gifts.find(gift => gift.order === selectedImageId);
+  if (!selectedGift) {
     return;
   }
 
-  const timestamp = new Date().toISOString();
-  const id = uuid();
-
-  // Create the new post object
-  const newPost = {
-    id,
+  const newPost: Post = {
+    id: uuid(),
     name: userName,
     comment: userComment,
-    giftId: gifts[selectedImageId - 1].id,
-    createdAt: timestamp,
-    gift: gifts[selectedImageId - 1]
+    giftId: selectedGift.id,
+    createdAt: new Date().toISOString(),
+    gift: selectedGift
   };
 
   try {
-    const response = await fetch('/post.json', {
+    const response = await fetch('/api/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,17 +238,18 @@ const handleSubmit = async () => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save post');
+      throw new Error('Failed to submit post');
     }
 
-    // Trigger a revalidation of the data
-    postMutate();
+    // Refresh the posts data
+    await postMutate();
     handleCloseModal();
   } catch (error) {
-    console.error('Error saving post:', error);
-    // Optionally add error handling UI here
+    console.error('Error submitting post:', error);
+    // You might want to show an error message to the user here
   }
 };
+
 
   const gifts = [
     {
