@@ -1,7 +1,7 @@
 import { KVNamespace } from '@cloudflare/workers-types';
 
 interface Env {
-  POSTS_KV: KVNamespace;
+  hyougahbd: KVNamespace;
 }
 
 interface PostsData {
@@ -24,8 +24,8 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
   };
 
   // Check KV binding
-  if (!context.env?.POSTS_KV) {
-    console.error('POSTS_KV binding is not configured');
+  if (!context.env?.hyougahbd) {
+    console.error('hyougahbd binding is not configured');
     return new Response(JSON.stringify({
       error: 'Server configuration error',
       details: 'KV binding is not configured'
@@ -45,7 +45,7 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
   if (context.request.method === 'GET') {
     try {
       console.log('Attempting to fetch posts from KV');
-      const kvPosts = await context.env.POSTS_KV.get('all_posts', { type: 'json' }) as PostsData;
+      const kvPosts = await context.env.hyougahbd.get('all_posts', { type: 'json' }) as PostsData;
       console.log('KV response:', kvPosts);
 
       if (!kvPosts) {
@@ -86,11 +86,11 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
 
       // Debug KV binding
       console.log('KV binding status:', {
-        exists: !!context.env?.POSTS_KV,
-        type: typeof context.env?.POSTS_KV
+        exists: !!context.env?.hyougahbd,
+        type: typeof context.env?.hyougahbd
       });
 
-      const existingPostsRaw = await context.env.POSTS_KV.get('all_posts');
+      const existingPostsRaw = await context.env.hyougahbd.get('all_posts');
       console.log('Raw KV response:', existingPostsRaw);
 
       let existingPosts: PostsData;
@@ -109,7 +109,7 @@ export const onRequest = async (context: { env: Env; request: Request }) => {
       console.log('Attempting to write updated posts:', existingPosts);
 
       try {
-        await context.env.POSTS_KV.put('all_posts', JSON.stringify(existingPosts));
+        await context.env.hyougahbd.put('all_posts', JSON.stringify(existingPosts));
         console.log('KV write successful');
       } catch (kvError) {
         console.error('KV write error:', kvError);
