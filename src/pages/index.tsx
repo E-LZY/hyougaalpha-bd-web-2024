@@ -163,26 +163,55 @@ export default function Page() {
     );
   };
 
-  const handleSubmit = () => {
-    if(userName==="" && userNameRef.current)
-    {
-      userNameRef.current.focus();
-      return;
-    }
-    if(userComment==="" && userCommentRef.current)
-    {
-      userCommentRef.current.focus();
-      return;
+const handleSubmit = async () => {
+  if(userName==="" && userNameRef.current)
+  {
+    userNameRef.current.focus();
+    return;
+  }
+  if(userComment==="" && userCommentRef.current)
+  {
+    userCommentRef.current.focus();
+    return;
+  }
+  if(!selectedImageId) {
+    return;
+  }
+
+  const timestamp = new Date().toISOString();
+  const id = uuid();
+
+  // Create the new post object
+  const newPost = {
+    id,
+    name: userName,
+    comment: userComment,
+    giftId: gifts[selectedImageId - 1].id,
+    createdAt: timestamp,
+    gift: gifts[selectedImageId - 1]
+  };
+
+  try {
+    const response = await fetch('/post.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save post');
     }
 
-    const timestamp = new Date().toISOString();
-    const id = uuid();
-    console.log('Name:', userName);
-    console.log('Comment:', userComment);
-    console.log('Selected Image ID:', selectedImageId);
-    console.log('Time:', timestamp);
+    // Trigger a revalidation of the data
+    postMutate();
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error('Error saving post:', error);
+    // Optionally add error handling UI here
+  }
+};
 
   const gifts = [
     {
