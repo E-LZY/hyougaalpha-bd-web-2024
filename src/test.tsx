@@ -202,26 +202,91 @@ export default function Page() {
     );
   };
 
-  const handleSubmit = () => {
-    if(userName==="" && userNameRef.current)
-    {
-      userNameRef.current.focus();
-      return;
+type Post = {
+  id: string;
+  name: string;
+  comment: string;
+  giftId: string;
+  createdAt: string;
+  gift: {
+    id: string;
+    name: string;
+    desc: string | null;
+    imgURL: string;
+    bgColorCode: string;
+    borderColor: string;
+    order: number;
+  };
+};
+
+type PostsData = {
+  data: Post[];
+  total: number;
+};
+
+// Replace the existing SWR fetcher with this
+const { data: postData, error: postError, isLoading: postIsLoading, isValidating: postIsValidating, mutate: postMutate } = useSWR('/api/posts', async (url) => {
+  setPage(0)
+  const res = await fetch(url)
+  if (!res.ok) {
+    return {
+      data: [],
+      total: 0
     }
-    if(userComment==="" && userCommentRef.current)
-    {
-      userCommentRef.current.focus();
-      return;
+  }
+  setPage(1)
+  return (await res.json()) as PostsData
+}, {
+  revalidateOnMount: true,
+  revalidateOnFocus: false
+})
+
+// Replace the handleSubmit function with this
+const handleSubmit = async () => {
+  if (userName === "" && userNameRef.current) {
+    userNameRef.current.focus();
+    return;
+  }
+  if (userComment === "" && userCommentRef.current) {
+    userCommentRef.current.focus();
+    return;
+  }
+  
+  const selectedGift = gifts.find(gift => gift.order === selectedImageId);
+  if (!selectedGift) {
+    return;
+  }
+
+  const newPost: Post = {
+    id: uuid(),
+    name: userName,
+    comment: userComment,
+    giftId: selectedGift.id,
+    createdAt: new Date().toISOString(),
+    gift: selectedGift
+  };
+
+  try {
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit post');
     }
 
-    const timestamp = new Date().toISOString();
-    const id = uuid();
-    console.log('Name:', userName);
-    console.log('Comment:', userComment);
-    console.log('Selected Image ID:', selectedImageId);
-    console.log('Time:', timestamp);
+    // Refresh the posts data
+    await postMutate();
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error('Error submitting post:', error);
+    // You might want to show an error message to the user here
+  }
+};
 
   const gifts = [
     {
