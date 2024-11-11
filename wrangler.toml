@@ -1,0 +1,21 @@
+[build]
+command = "npm run build"
+pages_build_output_dir = "out"
+
+[build.processing]
+skip_source_maps = true
+
+[[build.setup]]
+node_version = "18"
+
+[functions]
+node_compat = true
+directory = "functions"
+
+[[kv_namespaces]]
+binding = "hyougahbd"
+id = "dc95faaf9b5e48d193683d629e1599e5"
+preview_id = "dc95faaf9b5e48d193683d629e1599e5"
+
+[build.environment]
+NODE_VERSION = "18"
