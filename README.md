@@ -1,11 +1,11 @@
 # HyougaAlpha Birthday 2024 : Website Project
 adapt from https://github.com/RikiNozomu/baku-bd-static-2023
-<!-- ![](public/img/page.png) -->
 <!-- ![](public/img/stat.png) -->
 
 Website for posting a wish well to [HyougaAlpha](https://www.youtube.com/@HyougaAlpha_ARP "HyougaAlpha"), Thai Vtirtual Youtuber from [Algorhythm Project](https://algorhythm.realic.net/ "Algorhythm Project")
+![](public/img/hbd-banner.png)
 
-<!-- Production Website : [https://bakubirthday2023.vtuberthaiinfo.com/](https://bakubirthday2023.vtuberthaiinfo.com/) -->
+Production Website : [https://hyouga-birthday-2024.circusnexuscarnival.live/](https://hyouga-birthday-2024.circusnexuscarnival.live/)
 
 ## Getting Started
 
@@ -37,8 +37,12 @@ To learn more about Next.js, take a look at the following resources:
 
 ## Major Change
 ### Banner
- - data: src\pages\index.tsx line:57
+ - data: src\pages\index.tsx line:59
  - images: public\img\banner
+
+### Countdown
+ - function: src\pages\index.tsx line:142
+ - container: src\pages\index.tsx line:410
 
 ### Postcard's Decoration
  - card bg: 
@@ -51,15 +55,15 @@ To learn more about Next.js, take a look at the following resources:
 ### All CSS
  - all inside: src\styles\globals.css
 
-### Postcard Data
+### Postcard
  - read/write in file: public\post.json
- - data format: src\pages\index.tsx line:254
- - handleSubmit function: src\pages\index.tsx line:166
+ - data format: src\pages\index.tsx line:292
+ - handleSubmit function: src\pages\index.tsx line:205
+ - postcards container: src\pages\index.tsx line:551
 
 ### Other Important Information
  - website title: src\pages\app.tsx line:45
  - website icon: public\favicon.ico
- - variable declaration: src\pages\index.tsx line:41 
- - gift variable: src\pages\index.tsx line:187
- - writing button: src\pages\index.tsx line:399
- - postcards container: src\pages\index.tsx line:510
+ - variable declaration: src\pages\index.tsx line:35 
+ - gift variable: src\pages\index.tsx line:226
+ - writing button: src\pages\index.tsx line:433

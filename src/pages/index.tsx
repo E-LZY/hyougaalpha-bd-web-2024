@@ -28,17 +28,13 @@ import { PorkBottom } from '@/svg/badge/bottom/porkB';
 import { CpuTop } from '@/svg/badge/top/cpuT';
 import { CpuBottom } from '@/svg/badge/bottom/cpuB';
 
-//
-
 const oldStandard = Old_Standard_TT({ weight : '400', subsets : ['latin'] })
 const alegreya = Alegreya_Sans_SC({ weight : '400', subsets : ['latin'] })
 
 export default function Page() {
-  const [lastSwap, setLastSwap] = useState<DateTime>(DateTime.now())
   const [now, setNow] = useState<DateTime>(DateTime.now())
-  const [openEye, setOpenEye] = useState(true)
 
-  // new for writing box
+  //for writing box
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
   const [userName, setUserName] = useState('');
@@ -46,8 +42,14 @@ export default function Page() {
   const [userComment, setUserComment] = useState('');
   const userCommentRef = useRef<HTMLTextAreaElement>(null);
 
+  //for countdown
+  const [isVisible, setIsVisible] = useState(true);
+  const [timeLeftDays, setTimeLeftDays] = useState('');
+  const [timeLeftHours, setTimeLeftHours] = useState('');
+  const [timeLeftMins, setTimeLeftMins] = useState('');
+  const [timeLeftSecs, setTimeLeftSecs] = useState('');
+
   const pageSize = 10
-  const swapTime = 5
   const [page, setPage] = useState(1)
   const [dimensions, setDimensions] = useState({
     width: 0,
@@ -56,46 +58,60 @@ export default function Page() {
 
   const banners = [
     {
-      id: "dee279c3-351e-46a2-b20b-77315dcfade0",
-      name: "hyouga-keychain",
-      url: "https://shop.realic.net/products/2024-november-birthday-event?variant=49287100432664",
-      imgURL: "/img/banner/birthday-good.png",
+      id: "djup0t4w-swt7-xtko-s35h-bdt742vio7he",
+      name: "web-banner",
+      url: "",
+      imgURL: "/img/banner/web-banner.png",
       order: 1
     },
     {
-      id: "dee279c3-351e-46a2-b20b-77315dcfade0",
-      name: "hyouvember",
-      url: "https://x.com/search?q=%23%E0%B9%80%E0%B8%AE%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B9%80%E0%B8%A7%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%AD%E0%B8%A3%E0%B9%8C&src=typeahead_click",
-      imgURL: "/img/banner/hyouvember.jpg",
+      id: "dee279c3-351e-b6a2-b20b-77315dcfade0",
+      name: "hyouga-keychain",
+      url: "https://shop.realic.net/products/2024-november-birthday-event?variant=49287100432664",
+      imgURL: "/img/banner/birthday-good.png",
       order: 2
     },
     {
-      id: "aa90961a-cfb0-422c-b7ea-50474a71235e",
-      name: "cafe-project",
-      url: "https://x.com/CNubdao12251",
-      imgURL: "/img/banner/cafe.png",
+      id: "dee279c3-351e-26a2-b20b-77315dcfade0",
+      name: "hyouvember",
+      url: "https://x.com/search?q=%23%E0%B9%80%E0%B8%AE%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B9%80%E0%B8%A7%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%AD%E0%B8%A3%E0%B9%8C&src=typeahead_click",
+      imgURL: "/img/banner/hyouvember.jpg",
       order: 3
     },
     {
-      id: "5fae0719-5365-4baa-bc3e-4a8cbe5cb7e4",
-      name: "blooming-cat",
-      url: "https://x.com/BloomingCat__",
-      imgURL: "/img/banner/BloomingCat_Banner.png",
+      id: "aa90961a-cfb0-e22c-b7ea-50474a71235e",
+      name: "cafe-project",
+      url: "https://x.com/CNubdao12251",
+      imgURL: "/img/banner/cafe.png",
       order: 4
     },
     {
-      id: "6f82c72d-4598-4de3-9f45-1cdb83f65892",
-      name: "game",
-      url: "https://play.unity.com/en/games/742ac3a9-3679-4a94-8327-6ccf7018986f/tape-the-cats",
-      imgURL: "/img/banner/TapeTheCats.png",
+      id: "5fae0719-5365-ubaa-bc3e-4a8cbe5cb7e4",
+      name: "blooming-cat",
+      url: "https://x.com/BloomingCat__",
+      imgURL: "/img/banner/BloomingCat_Banner.png",
       order: 5
     },
     {
-      id: "8d3ab3b5-769d-4ab5-b06e-003bf8f2ad3a",
+      id: "6f82c72d-4598-ade3-9f45-1cdb83f65892",
+      name: "game",
+      url: "https://play.unity.com/en/games/742ac3a9-3679-4a94-8327-6ccf7018986f/tape-the-cats",
+      imgURL: "/img/banner/TapeTheCats.png",
+      order: 6
+    },
+    {
+      id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
+      name: "ck",
+      url: "https://x.com/hagaalphyou2211",
+      imgURL: "/img/banner/Unknown.png",
+      order: 7
+    },
+    {
+      id: "srrht64j-4he5-r2f4-hr6j-rhuk2f47dky5",
       name: "unknown",
       url: "",
       imgURL: "/img/banner/Unknown.png",
-      order: 6
+      order: 8
     }
   ]
 
@@ -107,7 +123,6 @@ export default function Page() {
   }
 
   useEffect(() => {
-    // Update Every Second
     const interval = setInterval(() => {
       setNow(DateTime.now())
     }, 1000)
@@ -123,17 +138,41 @@ export default function Page() {
     }
   },[])
 
-  useEffect(()=>{
-    setLastSwap(DateTime.now())
-  }, [openEye])
+  // for countdown
+  useEffect(() => {
+    // Set the target date and time to 22 Nov 2024 at 20:00
+    const targetDate = new Date('2024-11-22T20:00:00');
 
-  useEffect(()=>{
-    if(lastSwap.diffNow(['seconds']).seconds < (swapTime*-1)){
-      setOpenEye(!openEye)
-    }
-  }, [now])
+    const updateCountdown = () => {
+      const now = new Date();
+      const difference = targetDate.getTime() - now.getTime();
+
+      if (difference <= 0) {
+        // Hide the div once the target time is reached
+        setIsVisible(false); 
+        return;
+      }
+
+      // Calculate days, hours, minutes, and seconds left
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      setTimeLeftDays(`${days}`);
+      setTimeLeftHours(`${hours}`)
+      setTimeLeftMins(`${minutes}`)
+      setTimeLeftSecs(`${seconds}`)
+    };
+
+    // Update every second
+    const timer = setInterval(updateCountdown, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timer);
+  }, []);
   
-  // new for writing box
+  // for writing box
   const handleOpenModal = () => {
     if(isModalOpen)
     {
@@ -238,7 +277,6 @@ export default function Page() {
   ];
 
   
-  //end new
   const swiperRef = useRef<SwiperClass | null>(null);
 
   const { data:postData, error:postError, isLoading:postIsLoading, isValidating:postIsValidating, mutate:postMutate } = useSWR('/post.json', async (url) => {
@@ -281,34 +319,7 @@ export default function Page() {
       <div
         className={`flex flex-col min-h-screen w-full overflow-x-hidden z-[1] pt-6 pb-16 gap-4 text-[#000000] items-center`}
       >
-        {/* <div
-          className="flex flex-col w-full items-center relative"
-          style={{ height: "500px" }}
-        > */}
-          <div
-            className="flex flex-col w-full items-center relative aspect-[2/1]"
-          >
-          {/* <div
-            className="hover:cursor-pointer"
-            onClick={() => {
-              setOpenEye(!openEye);
-            }}
-          >
-            <div className={openEye ? "" : "hidden"}>
-              <img
-                className="hover:cursor-pointer min-[260px]:w-[260px] w-full"
-                src={"/img/baku_head.png"}
-                alt={"baku-bd-chibi"}
-              />
-            </div>
-            <div className={openEye ? "hidden" : ""}>
-              <img
-                className="hover:cursor-pointer min-[260px]:w-[260px] w-full"
-                src={"/img/baku_head_open.png"}
-                alt={"baku-bd-chibi"}
-              />
-            </div>
-          </div> */}
+        <div className="flex flex-col w-full items-center relative aspect-[2/1]">
           <div className="relative w-full sm:h-[150px] min-[500px]:h-[130px] min-[425px]:h-[100px] h-[80px]">
             <Fade
               in={true}
@@ -396,8 +407,31 @@ export default function Page() {
             ))}
           </Swiper>
         </div>
-        {/* button for writing */}
-        {!isModalOpen && (
+        {/* countdown */}
+        {isVisible && (
+          <div className="countdown-div">
+            <div className="countdown-col">
+              <div>
+                <p>{timeLeftDays}</p>
+                <label>Days</label>
+              </div>
+              <div>
+                <p>{timeLeftHours}</p>
+                <label>Hours</label>
+              </div>
+              <div>
+                <p>{timeLeftMins}</p>
+                <label>Minutes</label>
+              </div>
+              <div>
+                <p>{timeLeftSecs}</p>
+                <label>Seconds</label>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* writing button */}
+        {!isModalOpen && isVisible && (
           <button onClick={handleOpenModal} className="writing-btn">
             <FontAwesomeIcon
               className="text-[20px] aspect-square"
@@ -406,7 +440,7 @@ export default function Page() {
             &nbsp; ร่วมแปะคำอวยพร
           </button>
         )}
-        {isModalOpen && (
+        {isModalOpen && isVisible && (
           <div
             className="modal-overlay"
             onClick={(e) => e.target === e.currentTarget && handleCloseModal()}
@@ -466,12 +500,15 @@ export default function Page() {
                         <h2>แปะชื่อ</h2>
                         <div className="writing-name-textarea"></div>
                         <textarea
-                          rows={1}
-                          cols={29}
-                          placeholder="Write your name here..."
+                          placeholder="แปะชื่อตรงนี้เลย"
                           ref={userNameRef}
                           value={userName}
-                          onChange={(e) => setUserName(e.target.value)}
+                          onChange={(e) => {
+                            const textarea = e.target;
+                            textarea.style.height = 'auto';
+                            textarea.style.height = `${textarea.scrollHeight}px`;
+                            setUserName(textarea.value);
+                          }}
                           style={{
                             borderColor:
                               selectedImageId === gift.order
@@ -483,12 +520,15 @@ export default function Page() {
                       <div className="writing-comment">
                         <h2>แปะคำอวยพร</h2>
                         <textarea
-                          rows={3}
-                          cols={29}
-                          placeholder="Write your answer here..."
+                          placeholder="สุขสันต์วันเกิดฮากะอัลเฟี้ยว"
                           ref={userCommentRef}
                           value={userComment}
-                          onChange={(e) => setUserComment(e.target.value)}
+                          onChange={(e) => {
+                            const textarea = e.target;
+                            textarea.style.height = 'auto';
+                            textarea.style.height = `${textarea.scrollHeight}px`;
+                            setUserComment(textarea.value);
+                          }}
                           style={{
                             borderColor:
                               selectedImageId === gift.order
@@ -498,7 +538,9 @@ export default function Page() {
                         />
                       </div>
                       <br />
-                      <button onClick={handleSubmit} className='submit-btn'>ส่งคำอวยพร</button>
+                      <button onClick={handleSubmit} className="submit-btn">
+                        ส่งคำอวยพร
+                      </button>
                     </div>
                   ) : null
                 )}
