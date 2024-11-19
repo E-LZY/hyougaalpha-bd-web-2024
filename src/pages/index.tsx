@@ -106,9 +106,9 @@ export default function Page() {
     },
     {
       id: "8d3ab3b5-769d-4ab5-b06e-003bf8f2ad3a",
-      name: "unknown",
-      url: "",
-      imgURL: "/img/banner/Unknown.png",
+      name: "UR Little Cat",
+      url: "https://youtube.com/@urlittlecat?si=7k7XXlVKU1p0GhQ5",
+      imgURL: "/img/banner/IMG_4485.png",
       order: 8
     }
   ]
