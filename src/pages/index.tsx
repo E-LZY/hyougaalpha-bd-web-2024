@@ -103,14 +103,14 @@ export default function Page() {
       id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
       name: "ck",
       url: "https://x.com/hagaalphyou2211",
-      imgURL: "/img/banner/Unknown.png",
+      imgURL: "/img/banner/CK-banner.jpg",
       order: 7
     },
     {
       id: "srrht64j-4he5-r2f4-hr6j-rhuk2f47dky5",
       name: "unknown",
       url: "",
-      imgURL: "/img/banner/Unknown.png",
+      imgURL: "/img/banner/IMG_4485.PNG",
       order: 8
     }
   ]
@@ -328,6 +328,10 @@ export default function Page() {
               <img
                 className="absolute min-w-[650px] min-h-[360px] top-0 left-[50%] -translate-x-[50%] -z-[2]"
                 src="/img/RedScreen.png"
+                style={{
+                  width: dimensions.width >= 640 ? "3000px" : "1000px", 
+                  height: "auto", // Maintain aspect ratio
+                }}
               />
             </Fade>
           </div>
@@ -359,7 +363,7 @@ export default function Page() {
             onSwiper={(swiper: SwiperClass) => {
               swiperRef.current = swiper;
             }}
-            slidesPerView={dimensions.width >= 640 ? 3 : 1}
+            slidesPerView={dimensions.width >= 640 ? 3 : 1.5}
             spaceBetween={0}
             centeredSlides={true}
           >
