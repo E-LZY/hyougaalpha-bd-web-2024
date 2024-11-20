@@ -319,18 +319,18 @@ export default function Page() {
       <div
         className={`flex flex-col min-h-screen w-full overflow-x-hidden z-[1] pt-6 pb-16 gap-4 text-[#000000] items-center`}
       >
-        <div className="flex flex-col w-full items-center relative aspect-[2/1]">
-          <div className="relative w-full sm:h-[150px] min-[500px]:h-[130px] min-[425px]:h-[100px] h-[80px]">
+        <div className="flex flex-col w-full items-center relative aspect-[2/1] overflow-hidden">
+          <div className="relative w-full h-full">
             <Fade
               in={true}
-              className="text-center absolute -translate-x-[50%] left-[50%] flex flex-col w-full h-fit"
+              className="text-center absolute -translate-x-[50%] left-[50%] flex flex-col w-full h-full"
             >
               <img
                 className="absolute min-w-[650px] min-h-[360px] top-0 left-[50%] -translate-x-[50%] -z-[2]"
                 src="/img/RedScreen.png"
                 style={{
-                  width: dimensions.width >= 640 ? "3000px" : "1000px", 
-                  height: "auto", // Maintain aspect ratio
+                  width: dimensions.width >= 640 ? "3000px" : "1000px",
+                  height: "auto", maxWidth: "100%",
                 }}
               />
             </Fade>

@@ -45,8 +45,14 @@ body {
 
 
 /* new */
+.head-img {
+  margin: 0;
+  padding: 0;
+  display: block; 
+}
+
 .head-text {
-  margin-top: -10%;
+  margin-top: -11%;
   margin-bottom: 20px;
   font-family: "Swanky and Moo Moo";
   color: #B44137;
