@@ -45,8 +45,14 @@ body {
 
 
 /* new */
+.head-img {
+  margin: 0;
+  padding: 0;
+  display: block; 
+}
+
 .head-text {
-  margin-top: -10%;
+  margin-top: -11%;
   margin-bottom: 20px;
   font-family: "Swanky and Moo Moo";
   color: #B44137;
@@ -64,6 +70,37 @@ body {
   text-align: center;
 }
 
+.countdown-div {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  width: 60%;
+  height: 100px;
+}
+
+.countdown-col{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.countdown-col div {
+  width: 80%;
+  justify-items: center;
+}
+.countdown-col p{
+  width: 50%;
+  height: 70px;
+  border-radius: 20%;
+  text-align: center;
+  align-content: center;
+  font-size: 30px;
+  outline: none;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+.countdown-col label {
+  text-align: center;
+}
+
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
@@ -71,7 +108,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  background-color: rgba(0, 0, 0, 0.5); 
   justify-content: center;
   align-items: center;
 }
@@ -89,17 +126,22 @@ body {
   padding: 25px;
   border-radius: 5px;
   width: 350px;
-  /* text-align: center; */
 }
 
 .modal-content textarea {
   outline: none;
   resize: none;
+  width: 100%;
+  height: auto;
   margin-top: 8px;
   margin-bottom: 8px;
   padding: 15px;
   border: 2px solid;
   border-radius: 10%;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0;
 }
 
 .close-btn {
@@ -228,4 +270,3 @@ body {
   margin-top: -11px;
   margin-left: 19px;
 }
-
