@@ -56,64 +56,67 @@ export default function Page() {
     height: 0,
   });
 
+
   const banners = [
     {
-      id: "djup0t4w-swt7-xtko-s35h-bdt742vio7he",
-      name: "web-banner",
+      id: "lew279c3-351e-46a2-b20b-77315dcfade0",
+      name: "hyouga-hbd",
       url: "",
       imgURL: "/img/banner/web-banner.png",
       order: 1
     },
     {
-      id: "dee279c3-351e-b6a2-b20b-77315dcfade0",
+      id: "dee279c3-351e-46a2-b20b-77315dcfade0",
       name: "hyouga-keychain",
       url: "https://shop.realic.net/products/2024-november-birthday-event?variant=49287100432664",
       imgURL: "/img/banner/birthday-good.png",
       order: 2
     },
     {
-      id: "dee279c3-351e-26a2-b20b-77315dcfade0",
+      id: "dee279c3-351e-46a2-b20b-77315dcfade0",
       name: "hyouvember",
       url: "https://x.com/search?q=%23%E0%B9%80%E0%B8%AE%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B9%80%E0%B8%A7%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%AD%E0%B8%A3%E0%B9%8C&src=typeahead_click",
       imgURL: "/img/banner/hyouvember.jpg",
       order: 3
     },
     {
-      id: "aa90961a-cfb0-e22c-b7ea-50474a71235e",
+      id: "aa90961a-cfb0-422c-b7ea-50474a71235e",
       name: "cafe-project",
       url: "https://x.com/CNubdao12251",
       imgURL: "/img/banner/cafe.png",
       order: 4
     },
     {
-      id: "5fae0719-5365-ubaa-bc3e-4a8cbe5cb7e4",
+      id: "5fae0719-5365-4baa-bc3e-4a8cbe5cb7e4",
       name: "blooming-cat",
       url: "https://x.com/BloomingCat__",
       imgURL: "/img/banner/BloomingCat_Banner.png",
       order: 5
     },
     {
-      id: "6f82c72d-4598-ade3-9f45-1cdb83f65892",
+      id: "6f82c72d-4598-4de3-9f45-1cdb83f65892",
       name: "game",
       url: "https://play.unity.com/en/games/742ac3a9-3679-4a94-8327-6ccf7018986f/tape-the-cats",
       imgURL: "/img/banner/TapeTheCats.png",
       order: 6
     },
     {
-      id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
-      name: "ck",
+      id: "6f82c72d-4598-4de3-9f45-1cda23f65892",
+      name: "chaokuy",
       url: "https://x.com/hagaalphyou2211",
-      imgURL: "/img/banner/CK-banner.jpg",
+      imgURL: "/img/banner/CK-banner.png",
       order: 7
     },
     {
-      id: "srrht64j-4he5-r2f4-hr6j-rhuk2f47dky5",
-      name: "unknown",
-      url: "",
+      id: "8d3ab3b5-769d-4ab5-b06e-003bf8f2ad3a",
+      name: "UR Little Cat",
+      url: "https://youtube.com/@urlittlecat?si=7k7XXlVKU1p0GhQ5",
       imgURL: "/img/banner/IMG_4485.PNG",
       order: 8
     }
   ]
+  
+  
 type Post = {
   id: string;
   name: string;
