@@ -326,7 +326,7 @@ export default function Page() {
       <div
         className={`flex flex-col min-h-screen w-full overflow-x-hidden z-[1] pt-6 pb-16 gap-4 text-[#000000] items-center`}
       >
-        {/* <div className="flex flex-col w-full items-center relative aspect-[2/1] overflow-hidden">
+         <div className="flex flex-col w-full items-center relative aspect-[2/1] overflow-hidden">
           <div className="relative w-full h-full">
             <Fade
               in={true}
@@ -342,7 +342,7 @@ export default function Page() {
               />
             </Fade>
           </div>
-        </div>*/}
+        </div> 
         <div className="head-text">
           <h2>Happy Hyouga Day!</h2>
           <h4>= 22 Nov 2024 =</h4>
