@@ -118,7 +118,7 @@ export default function Page() {
       name: "UR Little Cat",
       url: "https://youtube.com/@urlittlecat?si=7k7XXlVKU1p0GhQ5",
       imgURL: "/img/banner/IMG_4485.PNG",
-      order: 8
+      order: 9
     }
   ]
 
