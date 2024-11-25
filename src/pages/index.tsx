@@ -110,7 +110,7 @@ export default function Page() {
       id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
       name: "ck",
       url: "https://x.com/hagaalphyou2211",
-      imgURL: "/img/banner/CK-banner.jpg",
+      imgURL: "/img/banner/CK-banner.png",
       order: 8
     },
     {
