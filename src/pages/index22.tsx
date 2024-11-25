@@ -232,26 +232,51 @@ type PostsData = {
     );
   };
 
-  const handleSubmit = () => {
-    if(userName==="" && userNameRef.current)
-    {
-      userNameRef.current.focus();
-      return;
-    }
-    if(userComment==="" && userCommentRef.current)
-    {
-      userCommentRef.current.focus();
-      return;
+  const handleSubmit = async () => {
+  if (userName === "" && userNameRef.current) {
+    userNameRef.current.focus();
+    return;
+  }
+  if (userComment === "" && userCommentRef.current) {
+    userCommentRef.current.focus();
+    return;
+  }
+  
+  const selectedGift = gifts.find(gift => gift.order === selectedImageId);
+  if (!selectedGift) {
+    return;
+  }
+
+  const newPost: Post = {
+    id: uuid(),
+    name: userName,
+    comment: userComment,
+    giftId: selectedGift.id,
+    createdAt: new Date().toISOString(),
+    gift: selectedGift
+  };
+
+  try {
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit post');
     }
 
-    const timestamp = new Date().toISOString();
-    const id = uuid();
-    console.log('Name:', userName);
-    console.log('Comment:', userComment);
-    console.log('Selected Image ID:', selectedImageId);
-    console.log('Time:', timestamp);
+    // Refresh the posts data
+    await postMutate();
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error('Error submitting post:', error);
+    // You might want to show an error message to the user here
+  }
+};
 
   const gifts = [
     {
