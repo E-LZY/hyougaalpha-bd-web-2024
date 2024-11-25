@@ -56,7 +56,7 @@ export default function Page() {
     height: 0,
   });
 
-  const banners = [
+const banners = [
     {
       id: "djup0t4w-swt7-xtko-s35h-bdt742vio7he",
       name: "web-banner",
@@ -110,17 +110,39 @@ export default function Page() {
       id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
       name: "ck",
       url: "https://x.com/hagaalphyou2211",
-      imgURL: "/img/banner/CK-banner.jpg",
+      imgURL: "/img/banner/CK-banner.png",
       order: 8
     },
     {
-      id: "srrht64j-4he5-r2f4-hr6j-rhuk2f47dky5",
-      name: "unknown",
-      url: "",
+      id: "8d3ab3b5-769d-4ab5-b06e-003bf8f2ad3a",
+      name: "UR Little Cat",
+      url: "https://youtube.com/@urlittlecat?si=7k7XXlVKU1p0GhQ5",
       imgURL: "/img/banner/IMG_4485.PNG",
       order: 9
     }
   ]
+
+  type Post = {
+  id: string;
+  name: string;
+  comment: string;
+  giftId: string;
+  createdAt: string;
+  gift: {
+    id: string;
+    name: string;
+    desc: string | null;
+    imgURL: string;
+    bgColorCode: string;
+    borderColor: string;
+    order: number;
+  };
+};
+
+type PostsData = {
+  data: Post[];
+  total: number;
+};
 
   const handleResize = () => {
     setDimensions({
@@ -209,26 +231,51 @@ export default function Page() {
     );
   };
 
-  const handleSubmit = () => {
-    if(userName==="" && userNameRef.current)
-    {
-      userNameRef.current.focus();
-      return;
-    }
-    if(userComment==="" && userCommentRef.current)
-    {
-      userCommentRef.current.focus();
-      return;
+  const handleSubmit = async () => {
+  if (userName === "" && userNameRef.current) {
+    userNameRef.current.focus();
+    return;
+  }
+  if (userComment === "" && userCommentRef.current) {
+    userCommentRef.current.focus();
+    return;
+  }
+  
+  const selectedGift = gifts.find(gift => gift.order === selectedImageId);
+  if (!selectedGift) {
+    return;
+  }
+
+  const newPost: Post = {
+    id: uuid(),
+    name: userName,
+    comment: userComment,
+    giftId: selectedGift.id,
+    createdAt: new Date().toISOString(),
+    gift: selectedGift
+  };
+
+  try {
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit post');
     }
 
-    const timestamp = new Date().toISOString();
-    const id = uuid();
-    console.log('Name:', userName);
-    console.log('Comment:', userComment);
-    console.log('Selected Image ID:', selectedImageId);
-    console.log('Time:', timestamp);
+    // Refresh the posts data
+    await postMutate();
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error('Error submitting post:', error);
+    // You might want to show an error message to the user here
+  }
+};
 
   const gifts = [
     {
@@ -286,39 +333,22 @@ export default function Page() {
   
   const swiperRef = useRef<SwiperClass | null>(null);
 
-  const { data:postData, error:postError, isLoading:postIsLoading, isValidating:postIsValidating, mutate:postMutate } = useSWR('/post.json', async (url) => {
-    setPage(0)
-    const res = await fetch(url)
-    if(!res.ok){
-        return {
-            data : [],
-            total : 0
-        }
+    const { data: postData, error: postError, isLoading: postIsLoading, isValidating: postIsValidating, mutate: postMutate } = useSWR('/api/posts', async (url) => {
+  setPage(0)
+  const res = await fetch(url)
+  if (!res.ok) {
+    return {
+      data: [],
+      total: 0
     }
-    setPage(1)
-    return (await res.json()) as {
-      data : {
-        id : string,
-        name : string,
-        comment : string
-        giftId : string,
-        createdAt : string,
-        gift : {
-          id: string;
-          name: string;
-          desc: string | null;
-          imgURL: string;
-          bgColorCode: string;
-          borderColor: string;
-          order: number;
-        }
-      }[],
-      total : number
-    }
-  },{
-    revalidateOnMount : true,
-    revalidateOnFocus : false
-  })
+  }
+  setPage(1)
+  return (await res.json()) as PostsData
+}, {
+  revalidateOnMount: true,
+  revalidateOnFocus: false
+})
+  
 
 
   return (
