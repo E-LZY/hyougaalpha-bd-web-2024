@@ -72,46 +72,53 @@ export default function Page() {
       order: 2
     },
     {
+      id: "2e4r6hfn-yjkl-srbd-7jdv-te45slorrtg8",
+      name: "hyouga-voicepack",
+      url: "https://shop.realic.net/products/2024-hyougaalpha-birthday-voice-pack",
+      imgURL: "/img/banner/voicepack.jpg",
+      order: 3
+    },
+    {
       id: "dee279c3-351e-26a2-b20b-77315dcfade0",
       name: "hyouvember",
       url: "https://x.com/search?q=%23%E0%B9%80%E0%B8%AE%E0%B8%B5%E0%B8%A2%E0%B8%A7%E0%B9%80%E0%B8%A7%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%AD%E0%B8%A3%E0%B9%8C&src=typeahead_click",
       imgURL: "/img/banner/hyouvember.jpg",
-      order: 3
+      order: 4
     },
     {
       id: "aa90961a-cfb0-e22c-b7ea-50474a71235e",
       name: "cafe-project",
       url: "https://x.com/CNubdao12251",
       imgURL: "/img/banner/cafe.png",
-      order: 4
+      order: 5
     },
     {
       id: "5fae0719-5365-ubaa-bc3e-4a8cbe5cb7e4",
       name: "blooming-cat",
       url: "https://x.com/BloomingCat__",
       imgURL: "/img/banner/BloomingCat_Banner.png",
-      order: 5
+      order: 6
     },
     {
       id: "6f82c72d-4598-ade3-9f45-1cdb83f65892",
       name: "game",
       url: "https://play.unity.com/en/games/742ac3a9-3679-4a94-8327-6ccf7018986f/tape-the-cats",
       imgURL: "/img/banner/TapeTheCats.png",
-      order: 6
+      order: 7
     },
     {
       id: "8d3ab3b5-769d-hab5-b06e-003bf8f2ad3a",
       name: "ck",
       url: "https://x.com/hagaalphyou2211",
       imgURL: "/img/banner/CK-banner.jpg",
-      order: 7
+      order: 8
     },
     {
       id: "srrht64j-4he5-r2f4-hr6j-rhuk2f47dky5",
       name: "unknown",
       url: "",
       imgURL: "/img/banner/IMG_4485.PNG",
-      order: 8
+      order: 9
     }
   ]
 
@@ -319,7 +326,7 @@ export default function Page() {
       <div
         className={`flex flex-col min-h-screen w-full overflow-x-hidden z-[1] pt-6 pb-16 gap-4 text-[#000000] items-center`}
       >
-        <div className="flex flex-col w-full items-center relative aspect-[2/1] overflow-hidden">
+        {/* <div className="flex flex-col w-full items-center relative aspect-[2/1] overflow-hidden">
           <div className="relative w-full h-full">
             <Fade
               in={true}
@@ -335,7 +342,7 @@ export default function Page() {
               />
             </Fade>
           </div>
-        </div>
+        </div>*/}
         <div className="head-text">
           <h2>Happy Hyouga Day!</h2>
           <h4>= 22 Nov 2024 =</h4>
@@ -435,7 +442,7 @@ export default function Page() {
           </div>
         )}
         {/* writing button */}
-        {!isModalOpen && isVisible && (
+        {!isModalOpen && (
           <button onClick={handleOpenModal} className="writing-btn">
             <FontAwesomeIcon
               className="text-[20px] aspect-square"

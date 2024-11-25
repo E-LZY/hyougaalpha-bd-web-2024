@@ -41,8 +41,8 @@ To learn more about Next.js, take a look at the following resources:
  - images: public\img\banner
 
 ### Countdown
- - function: src\pages\index.tsx line:142
- - container: src\pages\index.tsx line:414
+ - function: src\pages\index.tsx line:149
+ - container: src\pages\index.tsx line:421
 
 ### Postcard's Decoration
  - card bg: 
@@ -57,13 +57,13 @@ To learn more about Next.js, take a look at the following resources:
 
 ### Postcard
  - read/write in file: public\post.json
- - data format: src\pages\index.tsx line:292
- - handleSubmit function: src\pages\index.tsx line:205
- - postcards container: src\pages\index.tsx line:556
+ - data format: src\pages\index.tsx line:299
+ - handleSubmit function: src\pages\index.tsx line:212
+ - postcards container: src\pages\index.tsx line:563
 
 ### Other Important Information
  - website title: src\pages\app.tsx line:45
  - website icon: public\favicon.ico
  - variable declaration: src\pages\index.tsx line:35 
- - gift variable: src\pages\index.tsx line:226
- - writing button: src\pages\index.tsx line:438
+ - gift variable: src\pages\index.tsx line:233
+ - writing button: src\pages\index.tsx line:445
