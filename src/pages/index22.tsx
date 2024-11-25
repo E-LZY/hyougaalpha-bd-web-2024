@@ -122,6 +122,29 @@ export default function Page() {
     }
   ]
 
+type Post = {
+  id: string;
+  name: string;
+  comment: string;
+  giftId: string;
+  createdAt: string;
+  gift: {
+    id: string;
+    name: string;
+    desc: string | null;
+    imgURL: string;
+    bgColorCode: string;
+    borderColor: string;
+    order: number;
+  };
+};
+
+type PostsData = {
+  data: Post[];
+  total: number;
+};
+
+  
   const handleResize = () => {
     setDimensions({
       width: window.innerWidth,
