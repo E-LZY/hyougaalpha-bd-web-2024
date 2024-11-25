@@ -451,7 +451,7 @@ export default function Page() {
             &nbsp; ร่วมแปะคำอวยพร
           </button>
         )}
-        {isModalOpen && isVisible && (
+        {isModalOpen && (
           <div
             className="modal-overlay"
             onClick={(e) => e.target === e.currentTarget && handleCloseModal()}
